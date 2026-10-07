@@ -2,9 +2,12 @@ package com.lexicareer.term.service;
 
 import com.lexicareer.entity.*;
 import com.lexicareer.repository.*;
+import com.lexicareer.review.service.SpacedRepetitionService;
+import com.lexicareer.term.dto.TermRequest;
 import com.lexicareer.term.dto.TermResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,6 +23,7 @@ public class TermService {
     private final DailyTermLogRepository dailyTermLogRepository;
     private final UserInterestRepository userInterestRepository;
     private final CategoryRepository categoryRepository;
+    private final SpacedRepetitionService spacedRepetitionService;
 
     public TermResponse getDailyTerm(User user) {
         // Verificar se já recebeu termo hoje
@@ -138,6 +142,54 @@ public class TermService {
         userTermRepository.save(userTerm);
     }
 
+    public List<TermResponse> getFavoriteTerms(User user) {
+        List<UserTerm> favoriteUserTerms = userTermRepository.findByUserAndFavoriteTrue(user);
+        return favoriteUserTerms.stream()
+            .map(ut -> mapToResponse(ut.getTerm()))
+            .collect(Collectors.toList());
+    }
+
+    public boolean isFavorite(Long termId, User user) {
+        Term term = termRepository.findById(termId)
+            .orElseThrow(() -> new RuntimeException("Termo não encontrado"));
+
+        return userTermRepository.findByUserAndTerm(user, term)
+            .map(UserTerm::isFavorite)
+            .orElse(false);
+    }
+
+    public List<TermResponse> getTermsForReview(User user) {
+        List<UserTerm> userTerms = userTermRepository.findTermsToReview(user, LocalDateTime.now());
+        return userTerms.stream()
+            .map(ut -> mapToResponse(ut.getTerm()))
+            .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void markTermAsReviewed(Long termId, User user, boolean success) {
+        Term term = termRepository.findById(termId)
+            .orElseThrow(() -> new RuntimeException("Termo não encontrado"));
+
+        UserTerm userTerm = userTermRepository.findByUserAndTerm(user, term)
+            .orElseGet(() -> UserTerm.builder()
+                .user(user)
+                .term(term)
+                .status(UserTerm.Status.STUDIED)
+                .build());
+
+        userTerm.setReviewCount(userTerm.getReviewCount() + 1);
+        userTerm.setLastReviewAt(LocalDateTime.now());
+        userTerm.setNextReviewAt(spacedRepetitionService.calculateNextReview(userTerm, success));
+        userTerm.setStatus(spacedRepetitionService.updateStatus(userTerm, success));
+        userTerm.setKnowledgeLevel(spacedRepetitionService.updateKnowledgeLevel(userTerm, success));
+
+        if (success) {
+            userTerm.setCorrectAnswers(userTerm.getCorrectAnswers() + 1);
+        }
+
+        userTermRepository.save(userTerm);
+    }
+
     private TermResponse mapToResponse(Term term) {
         return TermResponse.builder()
             .id(term.getId())
@@ -150,5 +202,77 @@ public class TermService {
             .categoryName(term.getCategory().getName())
             .planType(term.getPlanType().toString())
             .build();
+    }
+
+    @Transactional
+    public TermResponse createTerm(TermRequest request, User user) {
+        if (!user.getRole().toString().equals("ADMIN")) {
+            throw new RuntimeException("Apenas administradores podem criar termos");
+        }
+
+        Category category = categoryRepository.findById(request.getCategoryId())
+            .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+
+        Term term = Term.builder()
+            .name(request.getName())
+            .definition(request.getDefinition())
+            .simpleExplanation(request.getSimpleExplanation())
+            .example(request.getExample())
+            .difficultyLevel(request.getDifficultyLevel() != null ? 
+                Term.DifficultyLevel.valueOf(request.getDifficultyLevel()) : Term.DifficultyLevel.INTERMEDIATE)
+            .category(category)
+            .planType(Term.PlanType.valueOf(category.getPlanType().name()))
+            .active(true)
+            .build();
+
+        Term saved = termRepository.save(term);
+        return mapToResponse(saved);
+    }
+
+    @Transactional
+    public TermResponse updateTerm(Long id, TermRequest request, User user) {
+        if (!user.getRole().toString().equals("ADMIN")) {
+            throw new RuntimeException("Apenas administradores podem atualizar termos");
+        }
+
+        Term term = termRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Termo não encontrado"));
+
+        if (request.getName() != null) {
+            term.setName(request.getName());
+        }
+        if (request.getDefinition() != null) {
+            term.setDefinition(request.getDefinition());
+        }
+        if (request.getSimpleExplanation() != null) {
+            term.setSimpleExplanation(request.getSimpleExplanation());
+        }
+        if (request.getExample() != null) {
+            term.setExample(request.getExample());
+        }
+        if (request.getDifficultyLevel() != null) {
+            term.setDifficultyLevel(Term.DifficultyLevel.valueOf(request.getDifficultyLevel()));
+        }
+        if (request.getCategoryId() != null) {
+            Category category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+            term.setCategory(category);
+        }
+
+        Term saved = termRepository.save(term);
+        return mapToResponse(saved);
+    }
+
+    @Transactional
+    public void deleteTerm(Long id, User user) {
+        if (!user.getRole().toString().equals("ADMIN")) {
+            throw new RuntimeException("Apenas administradores podem deletar termos");
+        }
+
+        Term term = termRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Termo não encontrado"));
+
+        term.setActive(false);
+        termRepository.save(term);
     }
 }

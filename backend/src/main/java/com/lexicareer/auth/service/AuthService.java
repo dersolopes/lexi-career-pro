@@ -31,6 +31,7 @@ public class AuthService {
             .name("Usuário")
             .level(User.Level.INTERMEDIATE)
             .plan(User.Plan.FREE)
+            .role(User.Role.USER)
             .active(true)
             .build();
 

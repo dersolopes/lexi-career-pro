@@ -42,6 +42,10 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Plan plan = Plan.FREE;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.USER;
+
     @Column(nullable = false)
     private boolean active = true;
 
@@ -89,5 +93,10 @@ public class User implements UserDetails {
     public enum Plan {
         FREE,
         PREMIUM
+    }
+
+    public enum Role {
+        USER,
+        ADMIN
     }
 }

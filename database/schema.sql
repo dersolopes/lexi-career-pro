@@ -23,6 +23,8 @@ CREATE TABLE users (
         CHECK (level IN ('BEGINNER', 'INTERMEDIATE', 'ADVANCED')),
     plan VARCHAR(50) NOT NULL DEFAULT 'FREE'
         CHECK (plan IN ('FREE', 'PREMIUM')),
+    role VARCHAR(50) NOT NULL DEFAULT 'USER'
+        CHECK (role IN ('USER', 'ADMIN')),
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -174,8 +176,7 @@ CREATE TABLE daily_term_log (
     shown_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     studied_at TIMESTAMP,
     study_duration_seconds INT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(user_id, DATE(shown_at))
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX idx_daily_term_log_user_id ON daily_term_log(user_id);

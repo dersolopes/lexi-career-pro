@@ -1,0 +1,571 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-10-09T10:52:00.000Z",
+  "__export_source": "insomnia.desktop.app:v9.0.0",
+  "resources": [
+    {
+      "_id": "req_auth_register",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Register",
+      "method": "POST",
+      "url": "{{base_url}}/api/auth/register",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"Password123!\",\n  \"name\": \"Test User\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_auth_login",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Login",
+      "method": "POST",
+      "url": "{{base_url}}/api/auth/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"Password123!\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "fld_auth",
+      "_type": "request_group",
+      "name": "Auth",
+      "parentId": "wrk_lexicareer"
+    },
+    {
+      "_id": "req_user_me",
+      "_type": "request",
+      "parentId": "fld_user",
+      "name": "Get Current User",
+      "method": "GET",
+      "url": "{{base_url}}/api/user/me",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "req_user_profession",
+      "_type": "request",
+      "parentId": "fld_user",
+      "name": "Update Profession",
+      "method": "PUT",
+      "url": "{{base_url}}/api/user/profession",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"profession\": \"Software Developer\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_user_level",
+      "_type": "request",
+      "parentId": "fld_user",
+      "name": "Update Level",
+      "method": "PUT",
+      "url": "{{base_url}}/api/user/level",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"level\": \"INTERMEDIATE\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "fld_user",
+      "_type": "request_group",
+      "name": "User",
+      "parentId": "wrk_lexicareer"
+    },
+    {
+      "_id": "req_categories_list",
+      "_type": "request",
+      "parentId": "fld_categories",
+      "name": "List Categories",
+      "method": "GET",
+      "url": "{{base_url}}/api/categories",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "req_categories_get",
+      "_type": "request",
+      "parentId": "fld_categories",
+      "name": "Get Category by ID",
+      "method": "GET",
+      "url": "{{base_url}}/api/categories/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "req_categories_create",
+      "_type": "request",
+      "parentId": "fld_categories",
+      "name": "Create Category",
+      "method": "POST",
+      "url": "{{base_url}}/api/categories",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Software Development\",\n  \"description\": \"Terms related to software development\",\n  \"planType\": \"FREE\",\n  \"displayOrder\": 1,\n  \"slug\": \"software-development\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_categories_update",
+      "_type": "request",
+      "parentId": "fld_categories",
+      "name": "Update Category",
+      "method": "PUT",
+      "url": "{{base_url}}/api/categories/1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Software Development\",\n  \"description\": \"Updated description\",\n  \"planType\": \"FREE\",\n  \"displayOrder\": 1,\n  \"slug\": \"software-development\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_categories_delete",
+      "_type": "request",
+      "parentId": "fld_categories",
+      "name": "Delete Category",
+      "method": "DELETE",
+      "url": "{{base_url}}/api/categories/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "fld_categories",
+      "_type": "request_group",
+      "name": "Categories",
+      "parentId": "wrk_lexicareer"
+    },
+    {
+      "_id": "req_terms_daily",
+      "_type": "request",
+      "parentId": "fld_terms",
+      "name": "Get Daily Term",
+      "method": "GET",
+      "url": "{{base_url}}/api/terms/daily",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "req_terms_search",
+      "_type": "request",
+      "parentId": "fld_terms",
+      "name": "Search Terms",
+      "method": "GET",
+      "url": "{{base_url}}/api/terms/search?keyword=api",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "req_terms_get",
+      "_type": "request",
+      "parentId": "fld_terms",
+      "name": "Get Term by ID",
+      "method": "GET",
+      "url": "{{base_url}}/api/terms/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "req_terms_studied",
+      "_type": "request",
+      "parentId": "fld_terms",
+      "name": "Mark as Studied",
+      "method": "POST",
+      "url": "{{base_url}}/api/terms/1/studied?knowledgeLevel=KNOWN",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "req_terms_favorite",
+      "_type": "request",
+      "parentId": "fld_terms",
+      "name": "Toggle Favorite",
+      "method": "POST",
+      "url": "{{base_url}}/api/terms/1/favorite",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "req_terms_favorites",
+      "_type": "request",
+      "parentId": "fld_terms",
+      "name": "Get Favorite Terms",
+      "method": "GET",
+      "url": "{{base_url}}/api/terms/favorites",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "req_terms_is_favorite",
+      "_type": "request",
+      "parentId": "fld_terms",
+      "name": "Check if Favorite",
+      "method": "GET",
+      "url": "{{base_url}}/api/terms/1/favorite",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "req_terms_review",
+      "_type": "request",
+      "parentId": "fld_terms",
+      "name": "Get Terms for Review",
+      "method": "GET",
+      "url": "{{base_url}}/api/terms/review",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "req_terms_mark_reviewed",
+      "_type": "request",
+      "parentId": "fld_terms",
+      "name": "Mark Term as Reviewed",
+      "method": "POST",
+      "url": "{{base_url}}/api/terms/1/review?success=true",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "req_terms_create",
+      "_type": "request",
+      "parentId": "fld_terms",
+      "name": "Create Term",
+      "method": "POST",
+      "url": "{{base_url}}/api/terms",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"API\",\n  \"definition\": \"Application Programming Interface\",\n  \"simpleExplanation\": \"A set of rules for building software applications\",\n  \"example\": \"REST API is used for web services\",\n  \"difficultyLevel\": \"BEGINNER\",\n  \"categoryId\": 1,\n  \"planType\": \"FREE\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_terms_update",
+      "_type": "request",
+      "parentId": "fld_terms",
+      "name": "Update Term",
+      "method": "PUT",
+      "url": "{{base_url}}/api/terms/1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"API\",\n  \"definition\": \"Application Programming Interface - Updated\",\n  \"simpleExplanation\": \"A set of rules for building software applications\",\n  \"example\": \"REST API is used for web services\",\n  \"difficultyLevel\": \"INTERMEDIATE\",\n  \"categoryId\": 1,\n  \"planType\": \"FREE\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_terms_delete",
+      "_type": "request",
+      "parentId": "fld_terms",
+      "name": "Delete Term",
+      "method": "DELETE",
+      "url": "{{base_url}}/api/terms/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "fld_terms",
+      "_type": "request_group",
+      "name": "Terms",
+      "parentId": "wrk_lexicareer"
+    },
+    {
+      "_id": "req_quiz_get",
+      "_type": "request",
+      "parentId": "fld_quiz",
+      "name": "Get Quiz for Term",
+      "method": "GET",
+      "url": "{{base_url}}/api/quiz/term/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "req_quiz_answer",
+      "_type": "request",
+      "parentId": "fld_quiz",
+      "name": "Submit Answer",
+      "method": "POST",
+      "url": "{{base_url}}/api/quiz/answer",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"questionId\": 1,\n  \"selectedOptionId\": 2\n}"
+      },
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_quiz_stats",
+      "_type": "request",
+      "parentId": "fld_quiz",
+      "name": "Get Quiz Stats",
+      "method": "GET",
+      "url": "{{base_url}}/api/quiz/stats",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "req_quiz_review",
+      "_type": "request",
+      "parentId": "fld_quiz",
+      "name": "Get Wrong Answers for Review",
+      "method": "GET",
+      "url": "{{base_url}}/api/quiz/review-needed",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "fld_quiz",
+      "_type": "request_group",
+      "name": "Quiz",
+      "parentId": "wrk_lexicareer"
+    },
+    {
+      "_id": "req_dashboard",
+      "_type": "request",
+      "parentId": "fld_dashboard",
+      "name": "Get Dashboard",
+      "method": "GET",
+      "url": "{{base_url}}/api/dashboard",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "fld_dashboard",
+      "_type": "request_group",
+      "name": "Dashboard",
+      "parentId": "wrk_lexicareer"
+    },
+    {
+      "_id": "req_interests_list",
+      "_type": "request",
+      "parentId": "fld_interests",
+      "name": "Get User Interests",
+      "method": "GET",
+      "url": "{{base_url}}/api/user/interests",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "req_interests_add",
+      "_type": "request",
+      "parentId": "fld_interests",
+      "name": "Add Interest",
+      "method": "POST",
+      "url": "{{base_url}}/api/user/interests",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"categoryId\": 1\n}"
+      },
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_interests_remove",
+      "_type": "request",
+      "parentId": "fld_interests",
+      "name": "Remove Interest",
+      "method": "DELETE",
+      "url": "{{base_url}}/api/user/interests/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "req_interests_recommendations",
+      "_type": "request",
+      "parentId": "fld_interests",
+      "name": "Get Recommendations",
+      "method": "GET",
+      "url": "{{base_url}}/api/user/interests/recommendations",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{jwt_token}}"
+        }
+      ]
+    },
+    {
+      "_id": "fld_interests",
+      "_type": "request_group",
+      "name": "User Interests",
+      "parentId": "wrk_lexicareer"
+    },
+    {
+      "_id": "env_lexicareer",
+      "_type": "environment",
+      "name": "LexiCareer API",
+      "data": {
+        "base_url": "http://localhost:8080",
+        "jwt_token": ""
+      }
+    },
+    {
+      "_id": "wrk_lexicareer",
+      "_type": "workspace",
+      "name": "LexiCareer Pro API",
+      "parentId": null
+    }
+  ]
+}

@@ -2,7 +2,7 @@ package com.lexicareer.dashboard.controller;
 
 import com.lexicareer.entity.User;
 import com.lexicareer.repository.UserRepository;
-import com.lexicareer.term.dto.DashboardResponse;
+import com.lexicareer.dashboard.dto.DashboardResponse;
 import com.lexicareer.term.service.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

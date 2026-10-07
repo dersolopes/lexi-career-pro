@@ -1,0 +1,63 @@
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.next
+pom.xml.sonar
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+# .mvn/wrapper/maven-wrapper.jar
+
+### Java / Logs ###
+*.class
+*.log
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+replay_pid*
+.mtj.tmp/
+*.ctxt
+
+### IntelliJ IDEA (Incluindo os seus novos arquivos) ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+/shelf/
+/workspace.xml
+/httpRequests/
+/queries/
+/dataSources/
+/dataSources.local.xml
+
+### Eclipse ###
+.metadata
+.classpath
+.project
+.settings/
+*.launch
+*.beaninfo
+.factorypath
+
+### Visual Studio Code ###
+.vscode/
+
+### Sistema Operacional ###
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Ehthumbs.db
+desktop.ini
+
+### Configurações Sensíveis (Opcional) ###
+# application-local.properties
+# .env

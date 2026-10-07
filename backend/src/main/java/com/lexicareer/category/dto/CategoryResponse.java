@@ -1,4 +1,4 @@
-package com.lexicareer.term.dto;
+package com.lexicareer.category.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
