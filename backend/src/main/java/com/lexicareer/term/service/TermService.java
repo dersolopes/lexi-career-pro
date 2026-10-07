@@ -2,9 +2,11 @@ package com.lexicareer.term.service;
 
 import com.lexicareer.entity.*;
 import com.lexicareer.repository.*;
+import com.lexicareer.term.dto.TermRequest;
 import com.lexicareer.term.dto.TermResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -150,5 +152,77 @@ public class TermService {
             .categoryName(term.getCategory().getName())
             .planType(term.getPlanType().toString())
             .build();
+    }
+
+    @Transactional
+    public TermResponse createTerm(TermRequest request, User user) {
+        if (!user.getRole().toString().equals("ADMIN")) {
+            throw new RuntimeException("Apenas administradores podem criar termos");
+        }
+
+        Category category = categoryRepository.findById(request.getCategoryId())
+            .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+
+        Term term = Term.builder()
+            .name(request.getName())
+            .definition(request.getDefinition())
+            .simpleExplanation(request.getSimpleExplanation())
+            .example(request.getExample())
+            .difficultyLevel(request.getDifficultyLevel() != null ? 
+                Term.DifficultyLevel.valueOf(request.getDifficultyLevel()) : Term.DifficultyLevel.INTERMEDIATE)
+            .category(category)
+            .planType(category.getPlanType())
+            .active(true)
+            .build();
+
+        Term saved = termRepository.save(term);
+        return mapToResponse(saved);
+    }
+
+    @Transactional
+    public TermResponse updateTerm(Long id, TermRequest request, User user) {
+        if (!user.getRole().toString().equals("ADMIN")) {
+            throw new RuntimeException("Apenas administradores podem atualizar termos");
+        }
+
+        Term term = termRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Termo não encontrado"));
+
+        if (request.getName() != null) {
+            term.setName(request.getName());
+        }
+        if (request.getDefinition() != null) {
+            term.setDefinition(request.getDefinition());
+        }
+        if (request.getSimpleExplanation() != null) {
+            term.setSimpleExplanation(request.getSimpleExplanation());
+        }
+        if (request.getExample() != null) {
+            term.setExample(request.getExample());
+        }
+        if (request.getDifficultyLevel() != null) {
+            term.setDifficultyLevel(Term.DifficultyLevel.valueOf(request.getDifficultyLevel()));
+        }
+        if (request.getCategoryId() != null) {
+            Category category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+            term.setCategory(category);
+        }
+
+        Term saved = termRepository.save(term);
+        return mapToResponse(saved);
+    }
+
+    @Transactional
+    public void deleteTerm(Long id, User user) {
+        if (!user.getRole().toString().equals("ADMIN")) {
+            throw new RuntimeException("Apenas administradores podem deletar termos");
+        }
+
+        Term term = termRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Termo não encontrado"));
+
+        term.setActive(false);
+        termRepository.save(term);
     }
 }

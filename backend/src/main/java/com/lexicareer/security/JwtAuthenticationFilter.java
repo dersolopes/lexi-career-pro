@@ -39,9 +39,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         userEmail = jwtService.extractUsername(jwt);
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userRepository.findByEmail(userEmail)
-                .orElse(null);
+            UserDetails userDetails = userRepository.findByEmail(userEmail).orElse(null);
 
+            // ADICIONE ESTES LOGS TEMPORÁRIOS AQUI:
+            System.out.println("🔍 E-mail extraído do Token: " + userEmail);
+            System.out.println("🔍 Encontrou usuário no banco? " + (userDetails != null));
+            if (userDetails != null) {
+                System.out.println("🔍 O usuário está ativo/habilitado? " + userDetails.isEnabled());
+                System.out.println("🔍 O Token é considerado válido pelo jwtService? " + jwtService.isTokenValid(jwt, userDetails));
+            }
             if (userDetails != null && jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                     userDetails,
